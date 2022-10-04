@@ -1,0 +1,27 @@
+.form-bottom {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  margin: 16px 0 0;
+}
+
+.form-bottom__message {
+  margin: 0;
+  padding: 0;
+  color: #8B8B8B;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+@media screen and (max-width: 737px) {
+  .form-bottom__message {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

@@ -1,0 +1,32 @@
+.register-page {
+  width: 396px;
+  margin: 0 auto;
+}
+
+.register-page__link {
+  text-decoration: none;
+  color: #4285F4;
+  cursor: pointer;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.register-page__link:hover {
+  opacity: 0.7;
+}
+
+@media screen and (max-width: 737px) {
+  .register-page {
+    width: 260px;
+  }
+
+  .register-page__link {
+    font-size: 12px;
+    line-height: 15px;
+  }
+}

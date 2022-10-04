@@ -1,0 +1,70 @@
+.project-schedule {
+  padding-top: 110px;
+  display: grid;
+  grid-template-columns: 1fr 4fr;
+  grid-template-rows: 36px auto;
+  row-gap: 14px;
+  justify-items: center;
+  align-items: center;
+}
+
+.project-schedule__cell {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 0;
+  width: 100%;
+  height: 100%;
+  color: #8B8B8B;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 500;
+  font-size: 14px;
+  line-height: 17px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.project-schedule__green-cell {
+  color: #000;
+  background-color: #3DDC84;
+  font-weight: 400;
+}
+
+.project-schedule__gray-cell {
+  color: #FFF;
+  background-color: #303030;
+  font-weight: 400;
+}
+
+@media screen and (max-width: 1249px) {
+  .project-schedule {
+    padding-top: 93px;
+  }
+
+  .project-schedule__cell {
+    font-weight: 400;
+  }
+}
+
+@media screen and (max-width: 737px) {
+  .project-schedule {
+    padding-top: 60px;
+    row-gap: 10px;
+  }
+
+  .project-schedule__cell {
+    font-weight: 400;
+    font-size: 11px;
+    line-height: 13px;
+    color: #A0A0A0;
+  }
+
+  .project-schedule__green-cell {
+    color: #000;
+  }
+
+  .project-schedule__gray-cell {
+    color: #FFF;
+  }
+}
