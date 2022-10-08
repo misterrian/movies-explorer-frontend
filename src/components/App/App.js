@@ -1,166 +1,61 @@
-import {useState, useEffect} from "react";
+import {useEffect, useState} from "react";
 import {Route, Routes, useNavigate} from "react-router";
+
 import {CurrentUserContext, defaultCurrentUser} from "../../contexts/CurrentUserContext";
-import {api} from "../../utils/api";
+
 import ProtectedRoute from "../common/ProtectedRoute";
 import Register from "../Register/Register";
 import Login from "../Login/Login";
-import Header from "../Header/Header";
 import Main from "../Main/Main";
-import Footer from "../Footer/Footer";
-import EditProfilePopup from "../EditProfilePopup";
-import EditAvatarPopup from "../EditAvatarPopup";
-import AddPlacePopup from "../AddPlacePopup";
-import SubmitPopup from "../SubmitPopup";
-import ImagePopup from "../ImagePopup";
-import {apiAuth} from "../../utils/apiAuth";
-import InfoTooltip from "../InfoTooltip";
-import errorImage from "../../images/error.svg";
-import successImage from "../../images/success.svg";
+import Profile from "../Profile/Profile";
+import Movies from "../Movies/Movies";
+import SavedMovies from "../SavedMovies/SavedMovies";
 import PageNotFound from "../PageNotFound/PageNotFound";
 
+import {mainApi} from "../../utils/MainApi";
+
 export default function App() {
-    const [email, setEmail] = useState('');
     const [currentUser, setCurrentUser] = useState(defaultCurrentUser);
-    const [cards, setCards] = useState([]);
-    const [isEditAvatarPopupOpen, setIsEditAvatarPopupOpen] = useState(false);
-    const [isEditProfilePopupOpen, setIsEditProfilePopupOpen] = useState(false);
-    const [isAddPlacePopupOpen, setIsAddPlacePopupOpen] = useState(false);
-    const [selectedCard, setSelectedCard] = useState(null);
-    const [cardToDelete, setCardToDelete] = useState(null);
-    const [isRequestInProgress, setIsRequestInProgress] = useState(false);
-    const [tooltip, setTooltip] = useState(null);
+    const [savedMovies, setSavedMovies] = useState([]);
 
     const navigate = useNavigate();
 
     useEffect(() => {
-        api.getUserInfo()
-            .then(userData => {
-                setCurrentUser(userData);
-                setEmail(userData.email);
-                navigate("/");
-            })
-            .catch(err => console.log(err));
-    }, [navigate]);
-
-    useEffect(() => {
-        if (currentUser._id) {
-            api.getInitialCards()
-                .then(response => setCards(response))
-                .catch(error => console.log(error));
+        if (!currentUser._id) {
+            mainApi.getUserInfo()
+                .then(userData => {
+                    setCurrentUser(userData);
+                    navigate("/");
+                })
+                .catch(err => console.log(err));
         }
-    }, [currentUser]);
+    }, [navigate, currentUser]);
 
-    const handleEditProfileClick = () => setIsEditProfilePopupOpen(true);
-    const handleAddPlaceClick = () => setIsAddPlacePopupOpen(true);
-    const handleEditAvatarClick = () => setIsEditAvatarPopupOpen(true);
-    const handleCardClick = (card) => setSelectedCard(card);
-
-    function closeAllPopups() {
-        setIsEditAvatarPopupOpen(false);
-        setIsEditProfilePopupOpen(false);
-        setIsAddPlacePopupOpen(false);
-        setSelectedCard(null);
-        setCardToDelete(null);
-    }
-
-    function handleUpdateUser(userData) {
-        setIsRequestInProgress(true);
-        api.saveProfile(userData)
-            .then(response => {
-                setCurrentUser(response);
-                closeAllPopups();
-            })
-            .catch(error => console.log(error))
-            .finally(() => setIsRequestInProgress(false));
-    }
-
-    function handleUpdateAvatar(avatarData) {
-        setIsRequestInProgress(true);
-        api.saveAvatar(avatarData)
-            .then(response => {
-                setCurrentUser(response);
-                closeAllPopups();
-            })
-            .catch(error => console.log(error))
-            .finally(() => setIsRequestInProgress(false));
-    }
-
-    function handleCardLike(event, card) {
-        event.stopPropagation();
-
-        const isLiked = card.likes.some(like => like === currentUser._id);
-
-        api
-            .changeLikeCardStatus(card._id, !isLiked)
-            .then((newCard) => setCards(state => state.map(c => card._id === c._id ? newCard : c)))
-            .catch(error => console.log(error));
-    }
-
-    function handleCardDelete(event, card) {
-        event.stopPropagation();
-        setCardToDelete(card);
-    }
-
-    function performCardDelete() {
-        setIsRequestInProgress(true);
-        api
-            .removeCard(cardToDelete._id)
-            .then(() => {
-                setCards((state) => state.filter(c => cardToDelete._id !== c._id));
-                closeAllPopups();
-            })
-            .catch(error => console.log(error))
-            .finally(() => setIsRequestInProgress(false));
-    }
-
-    function handleAddPlaceSubmit(cardData) {
-        setIsRequestInProgress(true);
-        api.addCard(cardData)
-            .then(newCard => {
-                setCards([newCard, ...cards]);
-                closeAllPopups();
-            })
-            .catch(error => console.log(error))
-            .finally(() => setIsRequestInProgress(false));
-    }
-
-    function handleExitClick() {
-        apiAuth.signout()
-            .then(() => setCurrentUser(defaultCurrentUser))
-            .catch(error => console.log(error));
-    }
+    // useEffect(() => {
+    //     if (currentUser._id) {
+    //         mainApi.getSavedMovies()
+    //             .then(response => setSavedMovies(response))
+    //             .catch(error => console.log(error));
+    //     }
+    // }, []);
 
     function handleRegister(user) {
-        apiAuth
+        mainApi
             .signup(user)
-            .then(() => setTooltip({
-                picture: successImage,
-                message: "Вы успешно зарегистрировались!",
-            }))
-            .catch(err => {
-                console.log(err);
-                setTooltip({
-                    picture: errorImage,
-                    message: "Что-то пошло не так! Попробуйте ещё раз.",
-                });
-            });
+            .then(() => {})
+            .catch(err => console.log(err));
     }
 
     function handleLogin(loginInfo) {
-        apiAuth.signin(loginInfo)
-            .then(() => navigate("/"))
-            .catch(err => {
-                console.log(err);
-                setTooltip({
-                    picture: errorImage,
-                    message: "Что-то пошло не так! Попробуйте ещё раз.",
-                });
-            });
+        mainApi.signin(loginInfo)
+            .then(() => navigate("/movies"))
+            .catch(err => console.log(err));
     }
 
-    function handleCloseTooltip() {
-        setTooltip(null);
+    function handleExitClick() {
+        mainApi.signout()
+            .then(() => setCurrentUser(defaultCurrentUser))
+            .catch(error => console.log(error));
     }
 
     return (
@@ -168,79 +63,24 @@ export default function App() {
             <Routes>
                 <Route path="/signup" element={<Register onRegister={handleRegister}/>}/>
                 <Route path="/signin" element={<Login onLogin={handleLogin}/>}/>
-                <Route path="/" element={
-                    <Main
-                        onEditProfile={handleEditProfileClick}
-                        onAddPlace={handleAddPlaceClick}
-                        onEditAvatar={handleEditAvatarClick}
-                        selectedCard={selectedCard}
-                        onCardClick={handleCardClick}
-                        cards={cards}
-                        onCardLike={handleCardLike}
-                        onCardDelete={handleCardDelete}
-                    />
-                }/>
-                <Route path="/pr" element={
+                <Route path="/" element={<Main/>}/>
+                <Route path="/profile" element={
                     <ProtectedRoute isLoggedIn={currentUser._id}>
-                        <div className="page">
-                            <Header>
-                                <p>{email}</p>
-                                <p className="header__link header__link_gray" onClick={handleExitClick}>Выйти</p>
-                            </Header>
-                            <Main
-                                onEditProfile={handleEditProfileClick}
-                                onAddPlace={handleAddPlaceClick}
-                                onEditAvatar={handleEditAvatarClick}
-                                selectedCard={selectedCard}
-                                onCardClick={handleCardClick}
-                                cards={cards}
-                                onCardLike={handleCardLike}
-                                onCardDelete={handleCardDelete}
-                            />
-                            <Footer/>
-                        </div>
+                        <Profile onExit={handleExitClick}/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/movies" element={
+                    <ProtectedRoute isLoggedIn={currentUser._id}>
+                        <Movies savedMovies={savedMovies} setSavedMovies={setSavedMovies}/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/saved-movies" element={
+                    <ProtectedRoute isLoggedIn={currentUser._id}>
+                        <SavedMovies savedMovies={savedMovies} setSavedMovies={setSavedMovies}/>
                     </ProtectedRoute>
                 }/>
                 <Route path="*" element={<PageNotFound/>}/>
             </Routes>
-
-            {/*<EditProfilePopup*/}
-            {/*    isOpen={isEditProfilePopupOpen}*/}
-            {/*    onClose={closeAllPopups}*/}
-            {/*    onUpdateUser={handleUpdateUser}*/}
-            {/*    submitText={isRequestInProgress ? "Сохранение..." : "Сохранить"}*/}
-            {/*/>*/}
-
-            {/*<EditAvatarPopup*/}
-            {/*    isOpen={isEditAvatarPopupOpen}*/}
-            {/*    onClose={closeAllPopups}*/}
-            {/*    onUpdateAvatar={handleUpdateAvatar}*/}
-            {/*    submitText={isRequestInProgress ? "Сохранение..." : "Сохранить"}*/}
-            {/*/>*/}
-
-            {/*<AddPlacePopup*/}
-            {/*    isOpen={isAddPlacePopupOpen}*/}
-            {/*    onClose={closeAllPopups}*/}
-            {/*    onAddPlace={handleAddPlaceSubmit}*/}
-            {/*    submitText={isRequestInProgress ? "Создание..." : "Создать"}*/}
-            {/*/>*/}
-
-            {/*<SubmitPopup*/}
-            {/*    isOpen={cardToDelete}*/}
-            {/*    onClose={closeAllPopups}*/}
-            {/*    onSubmit={performCardDelete}*/}
-            {/*    submitText={isRequestInProgress ? "Удаление..." : "Да"}*/}
-            {/*/>*/}
-
-            {/*<ImagePopup*/}
-            {/*    selectedCard={selectedCard}*/}
-            {/*    onClose={closeAllPopups}*/}
-            {/*/>*/}
-
-            {/*<InfoTooltip*/}
-            {/*    tooltip={tooltip}*/}
-            {/*    onClose={handleCloseTooltip}*/}
-            {/*/>*/}
         </CurrentUserContext.Provider>
     );
 }

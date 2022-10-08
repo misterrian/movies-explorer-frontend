@@ -19,7 +19,7 @@ export default function Register({onRegister}) {
 
     const handleSubmit = (event) => {
         event.preventDefault();
-        onRegister({email, password});
+        onRegister({name, email, password});
     };
 
     return (

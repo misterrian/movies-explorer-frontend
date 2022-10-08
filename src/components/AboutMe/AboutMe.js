@@ -3,7 +3,7 @@ import PortfolioItem from "./PortfolioItem";
 
 import "./AboutMe.css";
 
-import photoImage from "../../images2/its-me.jpg";
+import photoImage from "../../images/photo.jpg";
 
 export default function AboutMe() {
     return (
@@ -17,7 +17,7 @@ export default function AboutMe() {
                 параллельно изучаю веб-разработку.</p>
             <img src={photoImage} alt="Моя фотография" className="about-me-section__photo"/>
             <a className="about-me-section__link" target="_blank"
-               href="https://github.com/misterrian?tab=repositories">Github</a>
+               href="https://github.com/misterrian?tab=repositories" rel="noreferrer">Github</a>
             <h3 className="about-me-section__portfolio">Портфолио</h3>
             <ul className="about-me-section__portfolio-list">
                 <PortfolioItem title="Статичный сайт" href="https://github.com/misterrian/how-to-learn"/>

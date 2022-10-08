@@ -1,5 +1,5 @@
 import "./FormTop.css";
-import logoImage from "../../images2/logo.svg";
+import logoImage from "../../images/logo.svg";
 
 export default function FormTop({title}) {
     return (

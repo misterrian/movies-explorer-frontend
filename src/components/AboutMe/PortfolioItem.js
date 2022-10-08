@@ -1,6 +1,6 @@
 import "./PortfolioItem.css";
 
-import arrowImage from "../../images2/arrow.svg";
+import arrowImage from "../../images/arrow.svg";
 
 export default function PortfolioItem({title, href}) {
     return (

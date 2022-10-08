@@ -1,0 +1,26 @@
+.menu-bar {
+    display: none;
+    width: 44px;
+    height: 44px;
+    background-image: url("../../images/menu.svg");
+    background-position: center;
+    background-repeat: no-repeat;
+    cursor: pointer;
+}
+
+.menu-bar:hover {
+    opacity: 0.7;
+}
+
+@media screen and (max-width: 1249px) {
+    .menu-bar {
+        display: block;
+    }
+}
+
+@media screen and (max-width: 737px) {
+    .menu-bar {
+        width: 40px;
+        height: 43px;
+    }
+}

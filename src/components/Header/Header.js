@@ -3,12 +3,13 @@ import Navigation from "../Navigation/Navigation";
 
 import "./Header.css";
 
-import logoImage from "../../images2/logo.svg";
+import logoImage from "../../images/logo.svg";
 
 export default function Header() {
-    const location = useLocation();
+    const {pathname} = useLocation();
+    const className = pathname === "/" ? "header header__main-page" : "header";
     return (
-        <header className={`header${location.pathname === "/" && " header__main-page"}`}>
+        <header className={className}>
             <img src={logoImage} alt="Логотип" className="header__logo"/>
             <Navigation/>
         </header>

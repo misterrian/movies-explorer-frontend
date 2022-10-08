@@ -1,0 +1,113 @@
+.search-form {
+    display: flex;
+    align-items: center;
+    margin: 0 70px;
+    padding: 80px 0 83px;
+    gap: 41px;
+}
+
+.search-form__filter-group {
+    position: relative;
+    width: 100%;
+}
+
+.search-form__filter {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 14px 45px 14px 22px;
+    color: #FFF;
+    background: transparent;
+    border: 1px solid rgba(170, 170, 170, 0.2);
+    border-radius: 50px;
+    font-family: 'Inter', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.search-form__filter::placeholder {
+    color: #8B8B8B;
+}
+
+.search-form__start-search {
+    position: absolute;
+    width: 34px;
+    height: 34px;
+    top: 7px;
+    right: 7px;
+    background: transparent url("../../images/search.svg") no-repeat;
+    border: none;
+    cursor: pointer;
+}
+
+.short-films__checkbox-label {
+    display: flex;
+    align-items: center;
+    gap: 14px;
+    height: 20px;
+    color: #FFF;
+    font-family: 'Inter', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 13px;
+    line-height: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.search-form__short-films {
+    background-image: url("../../images/checkbox.svg");
+}
+
+.search-form__hidden-input {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+}
+
+.search-form__pseudo-checkbox {
+    display: inline-block;
+    width: 36px;
+    height: 20px;
+    background-image: url("../../images/disabled-checkbox.svg");
+}
+
+.search-form__hidden-input:checked + .search-form__pseudo-checkbox {
+    background-image: url("../../images/checkbox.svg");
+}
+
+.search-form__bottom-line {
+    margin: 0 70px 0;
+    border-bottom: rgba(170, 170, 170, 0.2) solid 1px;
+}
+
+@media screen and (max-width: 1249px) {
+    .search-form {
+        flex-direction: column;
+        margin: 0 30px;
+        padding: 60px 0 57px;
+        gap: 38px;
+    }
+
+    .search-form__bottom-line {
+        margin: 0 30px 0;
+    }
+}
+
+@media screen and (max-width: 737px) {
+    .search-form {
+        flex-direction: column;
+        margin: 0 10px;
+        padding: 60px 0 44px;
+        gap: 45px;
+    }
+
+    .search-form__bottom-line {
+        margin: 0 10px 0;
+    }
+}

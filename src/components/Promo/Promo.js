@@ -1,6 +1,6 @@
 import "./Promo.css";
 
-import webWorldImage from '../../images2/web-world.svg';
+import webWorldImage from '../../images/web-world.svg';
 
 export default function Promo() {
     return (
