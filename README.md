@@ -4,3 +4,5 @@
 
 Ссылка на макет проекта:
 https://disk.yandex.ru/d/htC_XHCVqpQt2g
+
+Для отображения заголовка залогиненного пользователя необходимо заменить пустую строку defaultCurrentUser._id, расположенную в contexts/CurrentUserContext.js, на любое содержимое.
