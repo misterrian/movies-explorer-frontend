@@ -1,0 +1,135 @@
+.promo-section {
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  background-color: #073042;
+  padding: 0 70px;
+}
+
+.promo-section__web-world {
+  position: absolute;
+  width: 310px;
+  height: 304px;
+  top: 149px;
+  right: 70px;
+}
+
+.promo-section__header {
+  width: 640px;
+  margin: 0;
+  padding-top: 75px;
+  color: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 50px;
+  line-height: 58px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.promo-section__suggestion {
+  width: 310px;
+  margin: 0;
+  padding-top: 36px;
+  color: #fff;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  opacity: 0.5;
+  mix-blend-mode: normal;
+}
+
+.promo-section__learn-more {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-sizing: border-box;
+  width: 129px;
+  height: 36px;
+  margin: 146px 0 75px;
+  border: 1px solid rgba(255, 255, 255, 0.6);
+  border-radius: 3px;
+  cursor: pointer;
+  color: #fff;
+  text-decoration: none;
+  font-family: 'Inter', Arial, sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+.promo-section__learn-more:hover {
+  color: rgba(255, 255, 255, 0.7);
+}
+
+@media screen and (max-width: 1249px) {
+  .promo-section {
+    padding: 0 50px;
+    align-items: center;
+    text-align: center;
+  }
+
+  .promo-section__web-world {
+    top: 140px;
+    left: calc(100% / 2 - 155px);
+  }
+
+  .promo-section__header {
+    padding-top: 492px;
+    width: 680px;
+    font-size: 40px;
+    line-height: 50px;
+  }
+
+  .promo-section__suggestion {
+    width: 260px;
+    padding-top: 22px;
+  }
+
+  .promo-section__learn-more {
+    margin: 92px 0 75px;
+    border: 1px solid rgba(255, 255, 255, 0.6);
+    font-weight: 500;
+    font-size: 12px;
+  }
+}
+
+@media screen and (max-width: 737px) {
+  .promo-section {
+    padding: 0 10px;
+  }
+
+  .promo-section__web-world {
+    width: 210px;
+    height: 206px;
+    top: 70px;
+    left: calc(100% / 2 - 105px);
+  }
+
+  .promo-section__header {
+    padding-top: 320px;
+    width: 300px;
+    font-size: 30px;
+    line-height: 38px;
+    letter-spacing: -0.04em;
+  }
+
+  .promo-section__suggestion {
+    width: 260px;
+    padding-top: 24px;
+  }
+
+  .promo-section__learn-more {
+    margin: 80px 0 30px;
+    font-weight: 500;
+    font-size: 12px;
+  }
+}

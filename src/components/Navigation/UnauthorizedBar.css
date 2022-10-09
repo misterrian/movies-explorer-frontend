@@ -1,0 +1,42 @@
+.unauthorized-bar {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    gap: 30px;
+}
+
+.unauthorized-bar__link {
+    text-decoration: none;
+    cursor: pointer;
+    font-family: 'Inter', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 16px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.unauthorized-bar__link:hover {
+    opacity: 0.7;
+}
+
+.unauthorized-bar__register-link {
+    color: #fff;
+}
+
+.unauthorized-bar__login-link {
+    box-sizing: border-box;
+    padding: 8px;
+    width: 76px;
+    height: 32px;
+    color: #000;
+    background-color: #3DDC84;
+    border-radius: 3px;
+}
+
+@media screen and (max-width: 737px) {
+    .unauthorized-bar {
+        gap: 14px;
+    }
+}

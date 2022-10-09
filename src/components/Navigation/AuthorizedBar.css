@@ -1,0 +1,37 @@
+.authorized-bar {
+    display: flex;
+    text-align: center;
+    align-items: center;
+    gap: 50px;
+}
+
+.authorized-bar__links {
+    display: flex;
+    gap: 20px;
+}
+
+.authorized-bar__link {
+    color: #FFF;
+    text-decoration: none;
+    font-family: 'Inter', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 400;
+    font-size: 14px;
+    line-height: 18px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
+.authorized-bar__link:hover {
+    opacity: 0.7;
+}
+
+.authorized-bar__selected-link {
+    font-weight: 500;
+}
+
+@media screen and (max-width: 1249px) {
+    .authorized-bar {
+        display: none;
+    }
+}

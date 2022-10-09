@@ -1,0 +1,6 @@
+@import url(vendor/normalize.css);
+@import url(vendor/inter-web/inter.css);
+
+.body {
+    background: #202020;
+}
