@@ -43,6 +43,10 @@
     cursor: pointer;
 }
 
+.search-form__start-search:hover {
+    opacity: 0.8;
+}
+
 .short-films__checkbox-label {
     display: flex;
     align-items: center;

@@ -48,6 +48,7 @@ export default function Profile({onExit}) {
                 </div>
                 {
                     !isEditMode && <button
+                        type="button"
                         className="profile__button profile_edit-button"
                         onClick={handleEditClick}
                     >
@@ -56,6 +57,7 @@ export default function Profile({onExit}) {
                 }
                 {
                     !isEditMode && <button
+                        type="button"
                         className="profile__button profile_exit-button"
                         onClick={onExit}
                     >
@@ -69,6 +71,7 @@ export default function Profile({onExit}) {
                 }
                 {
                     isEditMode && <button
+                        type="button"
                         className="profile__save-button"
                         onClick={handleSaveClick}
                     >

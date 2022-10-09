@@ -94,6 +94,7 @@
 @media screen and (max-width: 737px) {
   .techs-section {
     padding: 70px 18px;
+    background-color: #202020;
   }
 
   .techs-section__technologies {

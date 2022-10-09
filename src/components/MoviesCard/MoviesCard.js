@@ -20,6 +20,7 @@ export default function MoviesCard({movie, savedMovies, onLikeClick, onDislikeCl
             {
                 onLikeClick && !isSavedCard && <button
                     className="movies-card__save-button"
+                    type="button"
                     onClick={() => onLikeClick(movie)}
                 >
                     Сохранить

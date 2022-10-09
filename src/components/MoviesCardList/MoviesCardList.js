@@ -19,7 +19,8 @@ export default function MoviesCardList({movies, savedMovies, count, onLikeClick,
                         />)
                 }
             </div>
-            {movies.length > count && <button className="movies-card-list__more-cards-button">Ещё</button>}
+            {/*{movies.length > count && <button type="button" className="movies-card-list__more-cards-button">Ещё</button>}*/}
+            {onLikeClick && <button type="button" className="movies-card-list__more-cards-button">Ещё</button>}
         </>
     );
 }

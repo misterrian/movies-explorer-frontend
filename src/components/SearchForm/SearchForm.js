@@ -23,6 +23,7 @@ export default function SearchForm({onSubmit}) {
                         type="text"
                         placeholder="Фильм"
                         value={filter}
+                        required
                         onChange={handleFilterChange}
                     />
                     <button type="submit" className="search-form__start-search"/>
