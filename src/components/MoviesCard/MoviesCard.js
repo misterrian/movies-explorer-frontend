@@ -1,14 +1,10 @@
 import "./MoviesCard.css";
 
 export default function MoviesCard({movie, savedMovies, onLikeClick, onDislikeClick, dislikeClassName}) {
-    const isSavedCard = movie && savedMovies.some((savedMovie) => savedMovie.id === movie.id);
+    const isSavedCard = movie && savedMovies.some((savedMovie) => savedMovie.movieId === movie.movieId);
     return (
         <div className="movies-card">
-            <img
-                className="movies-card__image"
-                src={"https://api.nomoreparties.co" + movie.image.url}
-                alt={movie.image.name}
-            />
+            <img className="movies-card__image" src={movie.image} alt={movie.nameEN}/>
             <p className="movies-card__name">{movie.nameRU}</p>
             <p className="movies-card__duration">{getDuration(movie.duration)}</p>
             {

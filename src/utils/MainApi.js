@@ -40,8 +40,37 @@ class MainApi {
             .then(res => this._checkResponse(res));
     }
 
+    updateProfile(user) {
+        return fetch(`${this._baseUrl}/users/me`, {
+            method: 'PATCH',
+            headers: this._headers,
+            credentials: 'include',
+            body: JSON.stringify(user),
+        })
+            .then(res => this._checkResponse(res));
+    }
+
     getSavedMovies() {
-        return fetch(`${this._baseUrl}/cards`, {
+        return fetch(`${this._baseUrl}/movies`, {
+            headers: this._headers,
+            credentials: 'include',
+        })
+            .then(res => this._checkResponse(res));
+    }
+
+    addMovie(movie) {
+        return fetch(`${this._baseUrl}/movies`, {
+            method: 'POST',
+            headers: this._headers,
+            credentials: 'include',
+            body: JSON.stringify(movie),
+        })
+            .then(res => this._checkResponse(res));
+    }
+
+    deleteMovie(movie) {
+        return fetch(`${this._baseUrl}/movies/${movie._id}`, {
+            method: 'DELETE',
             headers: this._headers,
             credentials: 'include',
         })
@@ -51,7 +80,7 @@ class MainApi {
     _checkResponse(response) {
         return response.ok
             ? response.json()
-            : Promise.reject(`Ошибка: ${response.status}, ${response.statusText}`);
+            : Promise.reject(response);
     }
 }
 
