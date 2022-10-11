@@ -7,7 +7,9 @@ export default function InputField(props) {
         type,
         placeholder,
         value,
+        error,
         onChange,
+        pattern,
     } = props;
 
     return (
@@ -22,9 +24,11 @@ export default function InputField(props) {
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
+                required
+                pattern={pattern}
             />
 
-            <span className="input-field__error">Что-то пошло не так...</span>
+            <span className="input-field__error">{error}</span>
         </>
     );
 }

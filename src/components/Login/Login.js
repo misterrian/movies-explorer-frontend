@@ -1,23 +1,53 @@
-import React from "react";
+import React, {useState} from "react";
 import {Link} from "react-router-dom";
+import {useNavigate} from "react-router";
 
-import "./Login.css";
+import {useFormWithValidation} from "../hooks/FormValidator";
 
 import FormTop from "../FormTop/FormTop";
 import InputForm from "../InputForm/InputForm";
 import InputField from "../InputField/InputField";
 import FormBottom from "../FormBottom/FormBottom";
 
-export default function Login({onLogin}) {
-    const [email, setEmail] = React.useState('');
-    const [password, setPassword] = React.useState('');
+import {mainApi} from "../../utils/MainApi";
+import {AUTHORIZATION_ERROR, INCORRECT_LOGIN_OR_PASSWORD} from "../../utils/Constants";
 
-    const handleEmailChange = (e) => setEmail(e.target.value);
-    const handlePasswordChange = (e) => setPassword(e.target.value);
+import "./Login.css";
+
+export default function Login() {
+    const [errorMessage, setErrorMessage] = useState('');
+
+    const {values, errors, isValid, handleChange} = useFormWithValidation(
+        {email: '', password: ''},
+        {email: '', password: ''},
+        false,
+    );
+
+    const navigate = useNavigate();
 
     function handleSubmit(event) {
         event.preventDefault();
-        onLogin({email, password});
+
+        mainApi
+            .signin({
+                email: values.email,
+                password: values.password
+            })
+            .then(() => navigate("/movies"))
+            .catch(err => {
+                console.log(err);
+
+                if (err.status === 409) {
+                    setErrorMessage(INCORRECT_LOGIN_OR_PASSWORD);
+                } else {
+                    setErrorMessage(AUTHORIZATION_ERROR);
+                }
+            });
+    }
+
+    function handleFormChange(event) {
+        setErrorMessage('');
+        handleChange(event);
     }
 
     return (
@@ -27,6 +57,8 @@ export default function Login({onLogin}) {
             <InputForm
                 name="login"
                 submitText="Войти"
+                isValid={isValid}
+                error={errorMessage}
                 onSubmit={handleSubmit}
             >
                 <InputField
@@ -34,8 +66,9 @@ export default function Login({onLogin}) {
                     name="email"
                     type="email"
                     placeholder="email пользователя"
-                    value={email}
-                    onChange={handleEmailChange}
+                    value={values.email}
+                    error={errors.email}
+                    onChange={handleFormChange}
                 />
 
                 <InputField
@@ -43,8 +76,9 @@ export default function Login({onLogin}) {
                     name="password"
                     type="password"
                     placeholder="Пароль"
-                    value={password}
-                    onChange={handlePasswordChange}
+                    value={values.password}
+                    error={errors.password}
+                    onChange={handleFormChange}
                 />
             </InputForm>
 
