@@ -1,17 +1,17 @@
+import {useState} from "react";
+
 import "./SearchForm.css";
 
-export default function SearchForm(props) {
-    const {
-        filter = '',
-        shortMovies = false,
-        onFilterChange,
-        onShortMoviesChange,
-        onSubmit,
-    } = props;
+export default function SearchForm({onSubmit}) {
+    const [filter, setFilter] = useState("");
+    const [includeShortFilms, setIncludeShortFilms] = useState(false);
+
+    const handleFilterChange = (e) => setFilter(e.target.value);
+    const handleShortFilmsChange = (e) => setIncludeShortFilms(e.target.checked);
 
     function handleSubmit(event) {
         event.preventDefault();
-        onSubmit(filter, shortMovies);
+        onSubmit(filter, includeShortFilms);
     }
 
     return (
@@ -24,7 +24,7 @@ export default function SearchForm(props) {
                         placeholder="Фильм"
                         value={filter}
                         required
-                        onChange={onFilterChange}
+                        onChange={handleFilterChange}
                     />
                     <button type="submit" className="search-form__start-search"/>
                 </div>
@@ -34,8 +34,7 @@ export default function SearchForm(props) {
                         className="search-form__hidden-input"
                         id="short-films"
                         type="checkbox"
-                        checked={shortMovies}
-                        onChange={onShortMoviesChange}
+                        onChange={handleShortFilmsChange}
                     />
                     <span className="search-form__pseudo-checkbox"></span>
                 </label>

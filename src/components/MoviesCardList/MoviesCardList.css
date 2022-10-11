@@ -6,7 +6,7 @@
     margin: 70px 70px 28px;
 }
 
-.movies-card-list__message {
+.movies-card-list__not-found {
     margin: 70px 70px 0;
     text-align: center;
     color: #FFF;
@@ -46,7 +46,7 @@
         margin: 70px 30px 12px;
     }
 
-    .movies-card-list__message {
+    .movies-card-list__not-found {
         margin: 70px 30px 0;
     }
 
@@ -62,7 +62,7 @@
         margin: 40px 10px 13px;
     }
 
-    .movies-card-list__message {
+    .movies-card-list__not-found {
         margin: 70px 10px 0;
     }
 

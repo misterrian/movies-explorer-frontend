@@ -1,59 +1,26 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
-import {useNavigate} from "react-router";
 
-import {useFormWithValidation} from "../hooks/FormValidator";
+import "./Register.css";
 
 import FormTop from "../FormTop/FormTop";
 import InputForm from "../InputForm/InputForm";
 import InputField from "../InputField/InputField";
 import FormBottom from "../FormBottom/FormBottom";
 
-import {mainApi} from "../../utils/MainApi";
-import {USER_ALREADY_EXISTS, USER_REGISTRATION_ERROR} from "../../utils/Constants";
+export default function Register({onRegister}) {
+    const [name, setName] = useState('');
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
 
-import "./Register.css";
+    const handleNameChange = (e) => setName(e.target.value);
+    const handleEmailChange = (e) => setEmail(e.target.value);
+    const handlePasswordChange = (e) => setPassword(e.target.value);
 
-export default function Register() {
-    const [errorMessage, setErrorMessage] = useState('');
-
-    const {values, errors, isValid, handleChange} = useFormWithValidation(
-        {name: '', email: '', password: ''},
-        {name: '', email: '', password: ''},
-        false,
-    );
-
-    const navigate = useNavigate();
-
-    function handleSubmit(event) {
+    const handleSubmit = (event) => {
         event.preventDefault();
-
-        mainApi
-            .signup(values)
-            .then(() => {
-                mainApi
-                    .signin({
-                        email: values.email,
-                        password: values.password
-                    })
-                    .then(() => navigate("/movies"))
-                    .catch(err => console.log(err));
-            })
-            .catch((err) => {
-                console.log(err);
-
-                if (err.status === 409) {
-                    setErrorMessage(USER_ALREADY_EXISTS);
-                } else {
-                    setErrorMessage(USER_REGISTRATION_ERROR);
-                }
-            });
-    }
-
-    function handleFormChange(event) {
-        setErrorMessage('');
-        handleChange(event);
-    }
+        onRegister({name, email, password});
+    };
 
     return (
         <div className="register-page">
@@ -62,8 +29,6 @@ export default function Register() {
             <InputForm
                 name="register"
                 submitText="Зарегистрироваться"
-                isValid={isValid}
-                error={errorMessage}
                 onSubmit={handleSubmit}
             >
                 <InputField
@@ -71,10 +36,8 @@ export default function Register() {
                     name="name"
                     type="text"
                     placeholder="Имя пользователя"
-                    value={values.name}
-                    error={errors.name}
-                    onChange={handleFormChange}
-                    pattern={"[A-Za-zА-Яа-я ]+"}
+                    value={name}
+                    onChange={handleNameChange}
                 />
 
                 <InputField
@@ -82,9 +45,8 @@ export default function Register() {
                     name="email"
                     type="email"
                     placeholder="email пользователя"
-                    value={values.email}
-                    error={errors.email}
-                    onChange={handleFormChange}
+                    value={email}
+                    onChange={handleEmailChange}
                 />
 
                 <InputField
@@ -92,9 +54,8 @@ export default function Register() {
                     name="password"
                     type="password"
                     placeholder="Пароль"
-                    value={values.password}
-                    error={errors.password}
-                    onChange={handleFormChange}
+                    value={password}
+                    onChange={handlePasswordChange}
                 />
             </InputForm>
 

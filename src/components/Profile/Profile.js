@@ -3,9 +3,6 @@ import {useContext, useState} from "react";
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 import Header from "../Header/Header";
 
-import {mainApi} from "../../utils/MainApi";
-import {UPDATE_PROFILE_ERROR, USER_ALREADY_EXISTS} from "../../utils/Constants";
-
 import "./Profile.css";
 
 export default function Profile({onExit}) {
@@ -14,31 +11,11 @@ export default function Profile({onExit}) {
     const [name, setName] = useState(currentUser.name);
     const [email, setEmail] = useState(currentUser.email);
     const [isEditMode, setIsEditMode] = useState(false);
-    const [errorMessage, setErrorMessage] = useState('');
 
-    const handleNameChange = (e) => {
-        setName(e.target.value);
-        setErrorMessage('');
-    }
-
-    const handleEmailChange = (e) => {
-        setEmail(e.target.value);
-        setErrorMessage('');
-    }
-
+    const handleNameChange = (e) => setName(e.target.value);
+    const handleEmailChange = (e) => setEmail(e.target.value);
     const handleEditClick = () => setIsEditMode(true);
-
-    const handleSaveClick = () => {
-        mainApi.updateProfile({name, email})
-            .then(() => setIsEditMode(false))
-            .catch((err) => {
-                if (err.status === 409) {
-                    setErrorMessage(USER_ALREADY_EXISTS);
-                } else {
-                    setErrorMessage(UPDATE_PROFILE_ERROR);
-                }
-            });
-    }
+    const handleSaveClick = () => setIsEditMode(false);
 
     const inputClassName = isEditMode ? "profile_enabled-input" : "";
 
@@ -87,7 +64,11 @@ export default function Profile({onExit}) {
                         Выйти из аккаунта
                     </button>
                 }
-                {isEditMode && <span className="profile__error-message">{errorMessage}</span>}
+                {
+                    isEditMode && <span className="profile__error-message">
+                        При обновлении профиля произошла ошибка.
+                    </span>
+                }
                 {
                     isEditMode && <button
                         type="button"

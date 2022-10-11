@@ -16,19 +16,41 @@ import {mainApi} from "../../utils/MainApi";
 
 export default function App() {
     const [currentUser, setCurrentUser] = useState(defaultCurrentUser);
+    const [savedMovies, setSavedMovies] = useState([]);
 
     const navigate = useNavigate();
 
     useEffect(() => {
         if (!currentUser._id) {
             mainApi.getUserInfo()
-                .then((userData) => {
+                .then(userData => {
                     setCurrentUser(userData);
-                    navigate("/movies");
+                    navigate("/");
                 })
                 .catch(err => console.log(err));
         }
     }, [navigate, currentUser]);
+
+    // useEffect(() => {
+    //     if (currentUser._id) {
+    //         mainApi.getSavedMovies()
+    //             .then(response => setSavedMovies(response))
+    //             .catch(error => console.log(error));
+    //     }
+    // }, []);
+
+    function handleRegister(user) {
+        mainApi
+            .signup(user)
+            .then(() => {})
+            .catch(err => console.log(err));
+    }
+
+    function handleLogin(loginInfo) {
+        mainApi.signin(loginInfo)
+            .then(() => navigate("/movies"))
+            .catch(err => console.log(err));
+    }
 
     function handleExitClick() {
         mainApi.signout()
@@ -39,9 +61,9 @@ export default function App() {
     return (
         <CurrentUserContext.Provider value={currentUser}>
             <Routes>
-                <Route path="/signup" element={<Register/>}/>
-                <Route path="/signin" element={<Login/>}/>
-                <Route index element={<Main/>}/>
+                <Route path="/signup" element={<Register onRegister={handleRegister}/>}/>
+                <Route path="/signin" element={<Login onLogin={handleLogin}/>}/>
+                <Route path="/" element={<Main/>}/>
                 <Route path="/profile" element={
                     <ProtectedRoute isLoggedIn={currentUser._id}>
                         <Profile onExit={handleExitClick}/>
@@ -49,12 +71,12 @@ export default function App() {
                 }/>
                 <Route path="/movies" element={
                     <ProtectedRoute isLoggedIn={currentUser._id}>
-                        <Movies/>
+                        <Movies savedMovies={savedMovies} setSavedMovies={setSavedMovies}/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/saved-movies" element={
                     <ProtectedRoute isLoggedIn={currentUser._id}>
-                        <SavedMovies/>
+                        <SavedMovies savedMovies={savedMovies} setSavedMovies={setSavedMovies}/>
                     </ProtectedRoute>
                 }/>
                 <Route path="*" element={<PageNotFound/>}/>
