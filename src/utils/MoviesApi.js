@@ -1,3 +1,6 @@
+import validator from "validator";
+import {getFullUrl} from "./MoviesUtils";
+
 class MoviesApi {
     constructor(url) {
         this._url = url;
@@ -13,11 +16,15 @@ class MoviesApi {
             .then((res) => this._checkResponse(res))
             .then((movies) => {
                 return movies
-                    .filter((movie) => movie.id
-                        && movie.image?.url
-                        && movie.trailerLink
-                        && movie.image?.formats?.thumbnail?.url
-                    )
+                    .filter((movie) => movie.id && validator.isURL(movie.trailerLink))
+                    .filter((movie) => {
+                        const url = movie.image?.url;
+                        return url && validator.isURL(getFullUrl(url));
+                    })
+                    .filter((movie) => {
+                        const url = movie.image?.formats?.thumbnail?.url;
+                        return url && validator.isURL(getFullUrl(url));
+                    })
                     .map((movie) => {
                         const {
                             country = '',
@@ -26,19 +33,19 @@ class MoviesApi {
                             year = '',
                             description = '',
                             nameRU = '',
-                            nameEN = '',
+                            nameEN = 'none',
                         } = movie;
 
                         return {
                             movieId: movie.id,
-                            image: "https://api.nomoreparties.co" + movie.image.url,
+                            image: getFullUrl(movie.image.url),
                             country,
                             director,
                             duration,
                             year,
                             description,
                             trailerLink: movie.trailerLink,
-                            thumbnail: "https://api.nomoreparties.co" + movie.image.formats.thumbnail.url,
+                            thumbnail: getFullUrl(movie.image.formats.thumbnail.url),
                             nameRU,
                             nameEN,
                         };

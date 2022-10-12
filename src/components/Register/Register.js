@@ -1,6 +1,7 @@
 import {useState} from "react";
 import {Link} from "react-router-dom";
 import {useNavigate} from "react-router";
+import validator from "validator";
 
 import {useFormWithValidation} from "../hooks/FormValidator";
 
@@ -10,7 +11,13 @@ import InputField from "../InputField/InputField";
 import FormBottom from "../FormBottom/FormBottom";
 
 import {mainApi} from "../../utils/MainApi";
-import {USER_ALREADY_EXISTS, USER_REGISTRATION_ERROR} from "../../utils/Constants";
+
+import {
+    ENTER_VALID_EMAIL_ADDRESS,
+    USER_ALREADY_EXISTS,
+    USER_NAME_RULES,
+    USER_REGISTRATION_ERROR
+} from "../../utils/Constants";
 
 import "./Register.css";
 
@@ -55,6 +62,20 @@ export default function Register() {
         handleChange(event);
     }
 
+    function nameValidator(value, validity) {
+        console.log(validity);
+
+        return value.length === 0 || !validity.patternMismatch
+            ? ""
+            : USER_NAME_RULES;
+    }
+
+    function emailValidator(value) {
+        return value.length === 0 || validator.isEmail(value)
+            ? ""
+            : ENTER_VALID_EMAIL_ADDRESS;
+    }
+
     return (
         <div className="register-page">
             <FormTop title="Добро пожаловать!"/>
@@ -74,7 +95,8 @@ export default function Register() {
                     value={values.name}
                     error={errors.name}
                     onChange={handleFormChange}
-                    pattern={"[A-Za-zА-Яа-я ]+"}
+                    pattern={"[A-Za-zА-Яа-я- ]+"}
+                    validator={nameValidator}
                 />
 
                 <InputField
@@ -85,6 +107,7 @@ export default function Register() {
                     value={values.email}
                     error={errors.email}
                     onChange={handleFormChange}
+                    validator={emailValidator}
                 />
 
                 <InputField

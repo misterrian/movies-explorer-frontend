@@ -12,7 +12,12 @@ import {moviesApi} from "../../utils/MoviesApi";
 import {mainApi} from "../../utils/MainApi";
 
 import {filterMovies, getExtraMoviesCount, getStartCountOfVisibleMovies} from "../../utils/MoviesUtils";
-import {CANT_LOAD_MOVIES_FROM_SERVER_ERROR, NO_MOVIES_FOUND} from "../../utils/Constants";
+
+import {
+    CANT_LOAD_MOVIES_FROM_SERVER_ERROR,
+    NO_MOVIES_FOUND,
+    SEARCHING_WORD_REQUIRED,
+} from "../../utils/Constants";
 
 import "./Movies.css";
 
@@ -23,6 +28,7 @@ export default function Movies() {
     const [filter, setFilter] = useState('');
     const [shortMovies, setShortMovies] = useState(false);
     const [movies, setMovies] = useState([]);
+    const [filteredMovies, setFilteredMovies] = useState([]);
     const [visibleMoviesCount, setVisibleMoviesCount] = useState(getStartCountOfVisibleMovies(width));
     const [message, setMessage] = useState('');
     const [searchingInProgress, setSearchingInProgress] = useState(false);
@@ -41,7 +47,7 @@ export default function Movies() {
 
                 setFilter(filter);
                 setShortMovies(shortMovies);
-                setMovies(movies);
+                setFilteredMovies(movies);
                 setVisibleMoviesCount(visibleMoviesCount);
                 setMessage(message);
             }
@@ -68,19 +74,33 @@ export default function Movies() {
     }
 
     function handleSearch(filter, shortMovies) {
-        setSearchingInProgress(true);
-        setMovies([]);
+        setFilteredMovies([]);
         setVisibleMoviesCount(0);
-        setMessage('');
 
-        moviesApi.loadMovies()
+        if (filter.length === 0) {
+            setMessage(SEARCHING_WORD_REQUIRED);
+            return;
+        }
+
+        setSearchingInProgress(true);
+        setMessage("");
+
+        const moviesPromise = movies.length === 0
+            ? moviesApi.loadMovies()
+                .then((movies) => {
+                    setMovies(movies);
+                    return movies;
+                })
+            : Promise.resolve(movies);
+
+        moviesPromise
             .then((movies) => {
                 const filteredMovies = filterMovies(movies, filter, shortMovies);
                 const message = filteredMovies.length === 0
                     ? NO_MOVIES_FOUND
                     : '';
 
-                setMovies(filteredMovies);
+                setFilteredMovies(filteredMovies);
                 setVisibleMoviesCount(getStartCountOfVisibleMovies(width));
                 setMessage(message);
 
@@ -113,14 +133,14 @@ export default function Movies() {
     }
 
     function handleMoreButtonClick() {
-        if (visibleMoviesCount < movies.length) {
-            const count = Math.min(visibleMoviesCount + getExtraMoviesCount(width), movies.length);
+        if (visibleMoviesCount < filteredMovies.length) {
+            const count = Math.min(visibleMoviesCount + getExtraMoviesCount(width), filteredMovies.length);
             setVisibleMoviesCount(count);
 
             localStorage.setItem("SearchState", JSON.stringify({
                 filter,
                 shortMovies,
-                movies,
+                movies: filteredMovies,
                 visibleMoviesCount: count,
                 message,
             }));
@@ -139,16 +159,16 @@ export default function Movies() {
                     onSubmit={handleSearch}
                 />
                 {searchingInProgress && <Preloader/>}
-                {message && <p className="movies-card-list__message">{message}</p>}
-                {movies && <MoviesCardList
-                    movies={movies}
+                {filteredMovies && <MoviesCardList
+                    message={message}
+                    movies={filteredMovies}
                     savedMovies={savedMovies}
                     count={visibleMoviesCount}
                     onLikeClick={handleLikeClick}
                     onDislikeClick={handleDislikeClick}
                     dislikeClassName="movies-card__liked-movie"
                 />}
-                {movies.length > visibleMoviesCount &&
+                {filteredMovies.length > visibleMoviesCount &&
                     <button
                         className="movies-card-list__more-cards-button"
                         type="button"

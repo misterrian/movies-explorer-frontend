@@ -1,32 +1,39 @@
+import {
+    DEFAULT_EXTRA_MOVIES_COUNT,
+    DESKTOP_EXTRA_MOVIES_COUNT,
+    DESKTOP_INITIAL_MOVIES_COUNT,
+    DESKTOP_MIN_WIDTH,
+    MOBILE_INITIAL_MOVIES_COUNT,
+    SHORT_MOVIES_MAX_DURATION,
+    TABLET_INITIAL_MOVIES_COUNT,
+    TABLET_MIN_WIDTH,
+} from "./Constants";
+
 export function filterMovies(movies, filter, shortMovies) {
     const filterInLowerCase = filter.toLowerCase();
     return movies
-        .filter((movie) => movie.nameRU?.toLowerCase().includes(filterInLowerCase))
-        .filter((movie) => {
-            const duration = movie.duration;
-            if (duration) {
-                return shortMovies
-                    ? movie.duration <= 40
-                    : movie.duration > 40;
-            }
-            return false;
-        });
+        .filter((movie) => filterInLowerCase.length === 0 || movie.nameRU?.toLowerCase().includes(filterInLowerCase))
+        .filter((movie) => !shortMovies || movie.duration <= SHORT_MOVIES_MAX_DURATION);
+}
+
+export function getFullUrl(url) {
+    return "https://api.nomoreparties.co" + url;
 }
 
 export function getStartCountOfVisibleMovies(width) {
-    if (width > 1249) {
-        return 12;
+    if (width >= DESKTOP_MIN_WIDTH) {
+        return DESKTOP_INITIAL_MOVIES_COUNT;
     }
 
-    if (width > 737) {
-        return 8;
+    if (width >= TABLET_MIN_WIDTH) {
+        return TABLET_INITIAL_MOVIES_COUNT;
     }
 
-    return 5;
+    return MOBILE_INITIAL_MOVIES_COUNT;
 }
 
 export function getExtraMoviesCount(width) {
-    return width > 1249
-        ? 3
-        : 2;
+    return width >= DESKTOP_MIN_WIDTH
+        ? DESKTOP_EXTRA_MOVIES_COUNT
+        : DEFAULT_EXTRA_MOVIES_COUNT;
 }

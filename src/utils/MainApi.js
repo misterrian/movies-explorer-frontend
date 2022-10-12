@@ -85,7 +85,8 @@ class MainApi {
 }
 
 export const mainApi = new MainApi({
-    baseUrl: 'https://api.misterrian.movies.nomoredomains.sbs',
+//    baseUrl: 'https://api.misterrian.movies.nomoredomains.sbs',
+    baseUrl: 'http://localhost:3001',
     headers: {
         'Content-Type': 'application/json',
     }

@@ -16,14 +16,13 @@ export default function SearchForm(props) {
 
     return (
         <>
-            <form className="search-form" onSubmit={handleSubmit}>
+            <form className="search-form" noValidate onSubmit={handleSubmit}>
                 <div className="search-form__filter-group">
                     <input
                         className="search-form__filter"
                         type="text"
                         placeholder="Фильм"
                         value={filter}
-                        required
                         onChange={onFilterChange}
                     />
                     <button type="submit" className="search-form__start-search"/>

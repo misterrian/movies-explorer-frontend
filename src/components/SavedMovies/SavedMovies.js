@@ -12,14 +12,20 @@ import "./SavedMovies.css";
 
 export default function SavedMovies() {
     const [savedMovies, setSavedMovies] = useState([]);
-    const [moviesFilter, setMoviesFilter] = useState('');
+    const [filteredMovies, setFilteredMovies] = useState([]);
+    const [moviesFilter, setMoviesFilter] = useState("");
     const [shortMoviesFilter, setShortMoviesFilter] = useState(false);
+    const [message, setMessage] = useState("");
 
     useEffect(() => {
         mainApi.getSavedMovies()
             .then((response) => setSavedMovies(response))
             .catch((error) => console.log(error));
     }, []);
+
+    useEffect(() => {
+        setFilteredMovies(filterMovies(savedMovies, moviesFilter, shortMoviesFilter));
+    }, [savedMovies]);
 
     function handleDislikeClick(movieToDislike) {
         mainApi.deleteMovie(movieToDislike)
@@ -29,18 +35,18 @@ export default function SavedMovies() {
 
     function handleFilterChange(e) {
         setMoviesFilter(e.target.value);
+        setMessage("");
     }
 
     function handleShortMoviesChange(e) {
         const flag = e.target.checked;
         setShortMoviesFilter(flag);
-        if (moviesFilter.length > 0) {
-            handleSearch(moviesFilter, flag);
-        }
+        handleSearch(moviesFilter, flag);
     }
 
     function handleSearch(filter, shortMovies) {
-        filterMovies(savedMovies, filter, shortMovies);
+        setMessage("");
+        setFilteredMovies(filterMovies(savedMovies, filter, shortMovies));
     }
 
     return (
@@ -55,8 +61,9 @@ export default function SavedMovies() {
                     onSubmit={handleSearch}
                 />
                 {savedMovies && <MoviesCardList
-                    movies={savedMovies}
-                    savedMovies={savedMovies}
+                    message={message}
+                    movies={filteredMovies}
+                    savedMovies={filteredMovies}
                     count={Number.MAX_SAFE_INTEGER}
                     onDislikeClick={handleDislikeClick}
                     dislikeClassName="movies-card__remove-movie-button"

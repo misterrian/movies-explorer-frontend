@@ -4,7 +4,9 @@ export default function MoviesCard({movie, savedMovies, onLikeClick, onDislikeCl
     const isSavedCard = movie && savedMovies.some((savedMovie) => savedMovie.movieId === movie.movieId);
     return (
         <div className="movies-card">
-            <img className="movies-card__image" src={movie.image} alt={movie.nameEN}/>
+            <a className="movies-card__image-link" target="_blank" href={movie?.trailerLink} rel="noreferrer">
+                <img className="movies-card__image" src={movie.image} alt={movie.nameEN}/>
+            </a>
             <p className="movies-card__name">{movie.nameRU}</p>
             <p className="movies-card__duration">{getDuration(movie.duration)}</p>
             {

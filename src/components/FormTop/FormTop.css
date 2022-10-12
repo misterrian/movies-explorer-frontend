@@ -7,6 +7,11 @@
 .form-top__logo {
   width: 38px;
   height: 38px;
+  background-image: url("../../images/logo.svg");
+}
+
+.form-top__logo:hover {
+  opacity: 0.8;
 }
 
 .form-top__title {
