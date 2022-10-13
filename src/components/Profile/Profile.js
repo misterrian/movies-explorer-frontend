@@ -1,21 +1,69 @@
-import {useContext, useState} from "react";
+import {useContext, useEffect, useState} from "react";
+import validator from "validator";
 
 import {CurrentUserContext} from "../../contexts/CurrentUserContext";
 import Header from "../Header/Header";
 
+import {mainApi} from "../../utils/MainApi";
+
+import {UPDATE_PROFILE_ERROR, USER_ALREADY_EXISTS, USER_PROFILE_UPDATED} from "../../utils/Constants";
+
 import "./Profile.css";
 
-export default function Profile({onExit}) {
+export default function Profile({onUserUpdated, onExit}) {
     const currentUser = useContext(CurrentUserContext);
 
     const [name, setName] = useState(currentUser.name);
     const [email, setEmail] = useState(currentUser.email);
     const [isEditMode, setIsEditMode] = useState(false);
+    const [isSaveDisabled, setIsSaveDisabled] = useState(true);
+    const [errorMessage, setErrorMessage] = useState("");
+    const [profileUpdatedMessage, setProfileUpdatedMessage] = useState("");
 
-    const handleNameChange = (e) => setName(e.target.value);
-    const handleEmailChange = (e) => setEmail(e.target.value);
-    const handleEditClick = () => setIsEditMode(true);
-    const handleSaveClick = () => setIsEditMode(false);
+    useEffect(
+        () => {
+            const isDisabled = name.length === 0
+                || !validator.isEmail(email)
+                || (name === currentUser.name && email === currentUser.email);
+
+            setIsSaveDisabled(isDisabled);
+        },
+        [name, email, currentUser]
+    );
+
+    const handleNameChange = (e) => {
+        setName(e.target.value);
+        setErrorMessage("");
+        setProfileUpdatedMessage("");
+    }
+
+    const handleEmailChange = (e) => {
+        setEmail(e.target.value);
+        setErrorMessage("");
+        setProfileUpdatedMessage("");
+    }
+
+    const handleEditClick = () => {
+        setIsEditMode(true);
+        setErrorMessage("");
+        setProfileUpdatedMessage("");
+    }
+
+    const handleSaveClick = () => {
+        mainApi.updateProfile({name, email})
+            .then(() => {
+                onUserUpdated(name, email);
+                setIsEditMode(false);
+                setProfileUpdatedMessage(USER_PROFILE_UPDATED);
+            })
+            .catch((err) => {
+                if (err.status === 409) {
+                    setErrorMessage(USER_ALREADY_EXISTS);
+                } else {
+                    setErrorMessage(UPDATE_PROFILE_ERROR);
+                }
+            });
+    }
 
     const inputClassName = isEditMode ? "profile_enabled-input" : "";
 
@@ -46,6 +94,7 @@ export default function Profile({onExit}) {
                         onChange={handleEmailChange}
                     />
                 </div>
+                <span className="profile__message">{profileUpdatedMessage}</span>
                 {
                     !isEditMode && <button
                         type="button"
@@ -64,16 +113,13 @@ export default function Profile({onExit}) {
                         Выйти из аккаунта
                     </button>
                 }
-                {
-                    isEditMode && <span className="profile__error-message">
-                        При обновлении профиля произошла ошибка.
-                    </span>
-                }
+                {isEditMode && <span className="profile__error-message">{errorMessage}</span>}
                 {
                     isEditMode && <button
-                        type="button"
                         className="profile__save-button"
+                        type="button"
                         onClick={handleSaveClick}
+                        disabled={isSaveDisabled}
                     >
                         Сохранить
                     </button>

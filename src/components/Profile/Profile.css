@@ -69,12 +69,25 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+.profile__message {
+    margin-top: 25px;
+    color: #FFF;
+    height: 15px;
+    font-family: 'Inter', Arial, sans-serif;
+    font-style: normal;
+    font-weight: 500;
+    font-size: 12px;
+    line-height: 15px;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+}
+
 .profile__button:hover {
     opacity: 0.7;
 }
 
 .profile_edit-button {
-    margin-top: 203px;
+    margin-top: 163px;
     color: #FFF;
 }
 
@@ -85,6 +98,7 @@
 }
 
 .profile__error-message {
+    height: 13px;
     padding: 172px 0 0;
     color: #FF004C;
     font-family: 'Inter', Arial, sans-serif;
@@ -105,7 +119,6 @@
     border: none;
     border-radius: 3px;
     background-color: #3456F3;
-    cursor: pointer;
     font-family: 'Inter', Arial, sans-serif;
     font-style: normal;
     font-weight: 500;
@@ -115,8 +128,14 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-.profile__save-button:hover {
+.profile__save-button:hover:not([disabled]) {
     opacity: 0.8;
+    cursor: pointer;
+}
+
+.profile__save-button:disabled {
+    color: #C2C2C2;
+    background: #F8F8F8;
 }
 
 .profile_disabled-button {
@@ -129,7 +148,7 @@
     }
 
     .profile_edit-button {
-        margin-top: 193px;
+        margin-top: 153px;
     }
 
     .profile__error-message {
@@ -157,7 +176,7 @@
     }
 
     .profile_edit-button {
-        margin-top: 362px;
+        margin-top: 322px;
     }
 
     .profile__error-message {

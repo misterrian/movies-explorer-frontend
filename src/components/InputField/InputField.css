@@ -28,6 +28,7 @@
 
 .input-field__error {
   display: block;
+  height: 12px;
   color: #EE3465;
   margin: 4px 0 4px;
   font-family: Inter, Arial, sans-serif;

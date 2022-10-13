@@ -7,8 +7,18 @@ export default function InputField(props) {
         type,
         placeholder,
         value,
+        error,
         onChange,
+        pattern,
+        validator,
     } = props;
+
+    function handleInput(event) {
+        if (validator) {
+            const field = event.target;
+            field.setCustomValidity(validator(field.value, field.validity));
+        }
+    }
 
     return (
         <>
@@ -22,9 +32,12 @@ export default function InputField(props) {
                 placeholder={placeholder}
                 value={value}
                 onChange={onChange}
+                required
+                pattern={pattern}
+                onInput={handleInput}
             />
 
-            <span className="input-field__error">Что-то пошло не так...</span>
+            <span className="input-field__error">{error}</span>
         </>
     );
 }

@@ -2,7 +2,8 @@
 
 Клиентская часть проекта Movies Explorer, предназначенного для подбора интересных фильмов. Включает в себя функциональность регистрации и авторизации пользователей, подбора фильмов по фильтрам из общей библиотеки, операции с выбранными фильмами
 
-Ссылка на макет проекта:
-https://disk.yandex.ru/d/htC_XHCVqpQt2g
+Фронтенд часть проекта доступна по адресу:
+https://misterrian.movies.nomoredomains.sbs
 
-Для отображения заголовка залогиненного пользователя необходимо заменить пустую строку defaultCurrentUser._id, расположенную в contexts/CurrentUserContext.js, на любое содержимое.
+Ссылка на pull-request:
+https://github.com/misterrian/movies-explorer-frontend/pull/2
